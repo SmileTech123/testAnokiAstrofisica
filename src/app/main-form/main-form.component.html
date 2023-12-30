@@ -1,0 +1,39 @@
+<div class="card flex justify-content-center">
+  <form [formGroup]="mainFormGroup">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="p-card-title">
+          <i class="pi pi-star-fill custom-star-icon " ></i>Form Registrazione
+        </div>
+      </ng-template>
+      <div class="grid">
+        <div class="col">
+          <label class="customLabel">Corpo Celeste</label>
+          <p-dropdown formControlName="corpoCeleste" [options]="corpiCelesti" optionLabel="nome" placeholder="Seleziona corpo celeste"></p-dropdown>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="col">
+          <label class="customLabel">Data</label>
+          <input type="date" pInputText  />
+        </div>
+      </div>
+      <div class="grid">
+        <div class="col">
+          <label class="customLabel">Angolo orario°</label>
+          <input type="number" pInputText  />
+        </div>
+      </div>
+      <div class="grid">
+        <div class="col">
+          <label class="customLabel">Declinazione°</label>
+          <input type="number" pInputText  />
+        </div>
+      </div>
+      <ng-template pTemplate="footer">
+        <p-button label="Salva" icon="pi pi-check"></p-button>
+      </ng-template>
+    </p-card>
+  </form>
+</div>
+

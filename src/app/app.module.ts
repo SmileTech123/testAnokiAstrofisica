@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule,LOCALE_ID } from '@angular/core';
+import localeIt from '@angular/common/locales/it'
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -92,6 +93,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {KeyFilterModule} from "primeng/keyfilter";
 import {MainFormComponent} from "./main-form/main-form.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {registerLocaleData} from "@angular/common";
+registerLocaleData(localeIt)
 @NgModule({
   declarations: [
     AppComponent,
@@ -198,7 +201,9 @@ import {ReactiveFormsModule} from "@angular/forms";
     KeyFilterModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    {provide:LOCALE_ID,useValue:'it-IT'}
+  ],
   bootstrap: [AppComponent,MainFormComponent]
 })
 export class AppModule { }

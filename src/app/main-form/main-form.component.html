@@ -1,5 +1,5 @@
 <div class="card flex justify-content-center">
-  <form [formGroup]="mainFormGroup">
+  <form (ngSubmit)="onSubmit()" [formGroup]="mainFormGroup">
     <p-card>
       <ng-template pTemplate="header">
         <div class="p-card-title">
@@ -9,29 +9,67 @@
       <div class="grid">
         <div class="col">
           <label class="customLabel">Corpo Celeste</label>
-          <p-dropdown formControlName="corpoCeleste" [options]="corpiCelesti" optionLabel="nome" placeholder="Seleziona corpo celeste"></p-dropdown>
+          <p-dropdown (onChange)="changeCorpoCeleste()" formControlName="corpoCeleste" [options]="corpiCelesti" optionLabel="nome" placeholder="Seleziona corpo celeste"></p-dropdown>
         </div>
       </div>
       <div class="grid">
         <div class="col">
           <label class="customLabel">Data</label>
-          <input type="date" pInputText  />
+          <input formControlName="data" type="datetime-local" pInputText  />
+        </div>
+        <div class="col">
+          <label class="customLabel">Angolo orario (°)</label>
+          <input  formControlName="angoloOrario" type="number" min="0" max="360" pInputText  />
+        </div>
+        <div class="col">
+          <label class="customLabel">Declinazione (°)</label>
+          <input formControlName="declinazione" type="number" min="-90" max="90" pInputText  />
+        </div>
+        <div *ngIf="displayTemperatura" class="col">
+          <label class="customLabel">Temperatura (K)</label>
+          <input formControlName="temperatura" type="number" min="0" max="300000" pInputText  />
         </div>
       </div>
       <div class="grid">
-        <div class="col">
-          <label class="customLabel">Angolo orario°</label>
-          <input type="number" pInputText  />
+        <div *ngIf="displayMassa" class="col">
+          <label class="customLabel">Massa (M⊙)</label>
+          <input formControlName="massa" type="number" pInputText  />
+        </div>
+        <div *ngIf="displayRaggio" class="col">
+          <label class="customLabel">Raggio (R⊙)</label>
+          <input formControlName="raggio" type="number" pInputText  />
+        </div>
+        <div *ngIf="displayHarvard" class="col">
+          <label class="customLabel">Classe Harvard</label>
+          <p-dropdown formControlName="classeHarvard" [options]="classiHarvard"  placeholder="Seleziona class Harvard"></p-dropdown>
+        </div>
+        <div *ngIf="displayInclinazioneOrbitale" class="col">
+          <label class="customLabel">Inclinazione Orbitale</label>
+          <input formControlName="inclinazioneOrbitale" type="number" min="0" max="180" pInputText  />
         </div>
       </div>
       <div class="grid">
-        <div class="col">
-          <label class="customLabel">Declinazione°</label>
-          <input type="number" pInputText  />
+        <div *ngIf="displayAlbedo"  class="col-5">
+          <label class="customLabel">Albedo (%)</label>
+          <input formControlName="albedo" type="number" min="0" max="100" pInputText  />
+        </div>
+        <div *ngIf="displayDistanza" class="col-5">
+          <label class="customLabel">Distanza (UA)</label>
+          <input formControlName="distanza" (input)="distanzaModificata()"  type="number" pInputText  />
+        </div>
+        <div *ngIf="displaySistemaSolare"   class="col-2 text-center">
+          <label class="customLabel">Sistema Solare</label>
+          <br>
+          <br>
+          <i [ngClass]="mainFormGroup.controls['sistemaSolare'].value?'custom-icon-true pi pi-check':'custom-icon-false pi pi-times'" ></i>
+          <input type="hidden" formControlName="sistemaSolare">
         </div>
       </div>
+
+
+
       <ng-template pTemplate="footer">
-        <p-button label="Salva" icon="pi pi-check"></p-button>
+        <p-button [disabled]="mainFormGroup.invalid" type="submit" label="Invia" icon="pi pi-check"></p-button>
       </ng-template>
     </p-card>
   </form>

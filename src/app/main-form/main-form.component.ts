@@ -1,15 +1,19 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ModelCorpiCelesti} from "../Models/model-corpi-celesti";
 import { formatDate } from '@angular/common';
+import {Message} from "primeng/api";
 @Component({
   selector: 'app-main-form',
   templateUrl: './main-form.component.html',
   styleUrls: ['./main-form.component.css']
 })
 export class MainFormComponent {
+  corpoCelesteSelected:ModelCorpiCelesti={nome:"pianeta",codice:"p"}
   corpiCelesti:ModelCorpiCelesti[]=[{nome:"pianeta",codice:"p"}, {nome:"stella",codice:"s"} ,{nome:"asteroide",codice:"a"}, {nome:"meteora",codice:"m"}, {nome:"U.F.O.",codice:"u"}]
   classiHarvard:string[]=["O","B","A","F","G","K","M"]
+  messaggioInvio: Message[] = [{ severity: 'success', summary: '', detail: 'Registrazione avvenuta con successo!' }];
+  displayMessaggioInvio:boolean=false;
   displayTemperatura:boolean=true
   displayMassa:boolean=true
   displayRaggio:boolean=true
@@ -22,8 +26,7 @@ export class MainFormComponent {
 
 
   mainFormGroup:FormGroup = new FormGroup({
-    corpoCeleste:new FormControl({nome:"pianeta",codice:"p"},Validators.required),
-    data:new FormControl(formatDate(this.dataOggi, 'yyyy-MM-ddTHH:mm:ss', 'it'),Validators.required),
+    data:new FormControl(Validators.required),
     angoloOrario:new FormControl("",Validators.required),
     declinazione:new FormControl("",Validators.required),
     temperatura:new FormControl(""),
@@ -37,10 +40,8 @@ export class MainFormComponent {
   })
 
 
-
   validatoreMassaRaggio(control: AbstractControl): { [key: string]: any } | null {
       const value = control.value;
-      console.log(value)
       if (value <= 0 || value >100) {
         return { 'validatoreMassaRaggio': true };
       }
@@ -48,20 +49,26 @@ export class MainFormComponent {
   }
 
   validatoreDistanzaUA(control: AbstractControl): { [key: string]: any } | null {
-
     const value = control.value;
-    console.log(value)
     if (value <= 0 || value >5881413000000000) {
       return { 'validatoreDistanzaUA': true };
     }
     return null;
   }
 
+  resetForm(){
+    this.mainFormGroup.reset()
+    this.dataOggi=new Date()
+    this.mainFormGroup.controls['data'].setValue(formatDate(this.dataOggi, 'yyyy-MM-ddTHH:mm:ss', 'it'))
+  }
+
 
   changeCorpoCeleste(){
-    var valoreCorpoCeleste:ModelCorpiCelesti=this.mainFormGroup.controls['corpoCeleste'].value
-    var codiceCorpoCeleste=valoreCorpoCeleste.codice
+
+    var codiceCorpoCeleste=this.corpoCelesteSelected.codice
+    this.mainFormGroup.reset()
     this.resetDisplays();
+    this.resetForm()
     switch (codiceCorpoCeleste) {
       case "p":
         this.displayHarvard=false
@@ -95,7 +102,19 @@ export class MainFormComponent {
         this.displayAlbedo=false
         this.displayDistanza=false
         this.displaySistemaSolare=false
+        this.mainFormGroup.controls['massa'].clearValidators()
+        this.mainFormGroup.controls['raggio'].clearValidators()
+        this.mainFormGroup.controls['massa'].setErrors(null)
+        this.mainFormGroup.controls['raggio'].setErrors(null)
+        this.mainFormGroup.controls['massa'].updateValueAndValidity()
+        this.mainFormGroup.controls['raggio'].updateValueAndValidity()
+
+
     }
+
+  }
+
+  getValidators(name:string){
 
   }
 
@@ -119,12 +138,19 @@ export class MainFormComponent {
     this.displayAlbedo=true
     this.displayDistanza=true
     this.displaySistemaSolare=true
+    this.mainFormGroup.controls['classeHarvard'].clearValidators()
+    this.mainFormGroup.controls['distanza'].clearValidators()
+    this.mainFormGroup.controls['classeHarvard'].setErrors(null)
+    this.mainFormGroup.controls['distanza'].setErrors(null)
+    this.mainFormGroup.controls['classeHarvard'].updateValueAndValidity()
+    this.mainFormGroup.controls['distanza'].updateValueAndValidity()
+    this.mainFormGroup.controls['massa'].setValidators(this.validatoreMassaRaggio)
+    this.mainFormGroup.controls['raggio'].setValidators(this.validatoreMassaRaggio)
   }
 
   onSubmit() {
-    // Logica per gestire i dati del form dopo il submit
-    console.log('Dati del form:', this.mainFormGroup);
-    // Puoi anche chiamare un servizio per inviare i dati al server
+    this.displayMessaggioInvio=true
+    this.resetForm()
   }
 
 }

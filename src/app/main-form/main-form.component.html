@@ -1,6 +1,7 @@
 <div class="card flex justify-content-center">
   <form (ngSubmit)="onSubmit()" [formGroup]="mainFormGroup">
     <p-card>
+      <p-messages *ngIf="displayMessaggioInvio" [(value)]="messaggioInvio" [enableService]="false" [closable]="false"></p-messages>
       <ng-template pTemplate="header">
         <div class="p-card-title">
           <i class="pi pi-star-fill custom-star-icon " ></i>Form Registrazione
@@ -9,7 +10,7 @@
       <div class="grid">
         <div class="col">
           <label class="customLabel">Corpo Celeste</label>
-          <p-dropdown (onChange)="changeCorpoCeleste()" formControlName="corpoCeleste" [options]="corpiCelesti" optionLabel="nome" placeholder="Seleziona corpo celeste"></p-dropdown>
+          <p-dropdown [(ngModel)]="corpoCelesteSelected" (ngModelChange)="changeCorpoCeleste()" [ngModelOptions]="{standalone:true}"  [options]="corpiCelesti" optionLabel="nome" placeholder="Seleziona corpo celeste"></p-dropdown>
         </div>
       </div>
       <div class="grid">

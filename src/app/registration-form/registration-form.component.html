@@ -1,7 +1,6 @@
 <div class="card flex justify-content-center">
   <form (ngSubmit)="onSubmit()" [formGroup]="mainFormGroup">
     <p-card>
-      <p-messages *ngIf="displayMessaggioInvio" [(value)]="messaggioInvio" [enableService]="false" [closable]="false"></p-messages>
       <ng-template pTemplate="header">
         <div class="p-card-title">
           <i class="pi pi-star-fill custom-star-icon " ></i>Form Registrazione
@@ -42,7 +41,7 @@
         </div>
         <div *ngIf="displayHarvard" class="col">
           <label class="customLabel">Classe Harvard</label>
-          <p-dropdown formControlName="classeHarvard" [options]="classiHarvard"  placeholder="Seleziona class Harvard"></p-dropdown>
+          <p-dropdown formControlName="classeHarvard" [options]="classiHarvard"  placeholder="Seleziona classe Harvard"></p-dropdown>
         </div>
         <div *ngIf="displayInclinazioneOrbitale" class="col">
           <label class="customLabel">Inclinazione Orbitale</label>
@@ -66,13 +65,18 @@
           <input type="hidden" formControlName="sistemaSolare">
         </div>
       </div>
-
-
-
       <ng-template pTemplate="footer">
         <p-button [disabled]="mainFormGroup.invalid" type="submit" label="Invia" icon="pi pi-check"></p-button>
       </ng-template>
     </p-card>
   </form>
 </div>
+<p-dialog header="Esito registrazione" [(visible)]="displayDialogMessaggio" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+  <p-messages [(value)]="dialogMessaggio" [enableService]="false" [closable]="false"></p-messages>
+  <ng-template pTemplate="footer">
+    <p-button severity="secondary" icon="pi pi-home" (click)="returnToHome()" label="Torna alla home" pAutoFocus [autofocus]="true"></p-button>
+    <p-button severity="success" icon="pi pi-plus" (click)="resetForm()" label="Esegui nuova registrazione" pAutoFocus [autofocus]="true"></p-button>
+  </ng-template>
+</p-dialog>
+
 

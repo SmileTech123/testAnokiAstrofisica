@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {MainFormComponent} from "./main-form/main-form.component";
+import {RegistrationFormComponent} from "./registration-form/registration-form.component";
+import {HomepageComponent} from "./homepage/homepage.component";
 
 const routes: Routes = [
-  {path:"home",component:MainFormComponent},
-  { path: '', redirectTo: '/home', pathMatch: 'full' }
+  {path:"home",component:HomepageComponent},
+  {path:"registration",component:RegistrationFormComponent},
+  { path: '', redirectTo: '/registration', pathMatch: 'full' }
 ];
 
 @NgModule({

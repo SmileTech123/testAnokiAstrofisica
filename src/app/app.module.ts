@@ -91,14 +91,16 @@ import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {KeyFilterModule} from "primeng/keyfilter";
-import {MainFormComponent} from "./main-form/main-form.component";
+import {RegistrationFormComponent} from "./registration-form/registration-form.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {registerLocaleData} from "@angular/common";
+import { HomepageComponent } from './homepage/homepage.component';
 registerLocaleData(localeIt)
 @NgModule({
   declarations: [
     AppComponent,
-    MainFormComponent
+    RegistrationFormComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -204,6 +206,6 @@ registerLocaleData(localeIt)
   providers: [
     {provide:LOCALE_ID,useValue:'it-IT'}
   ],
-  bootstrap: [AppComponent,MainFormComponent]
+  bootstrap: [AppComponent,RegistrationFormComponent]
 })
 export class AppModule { }

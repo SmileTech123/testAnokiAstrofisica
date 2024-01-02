@@ -3,17 +3,22 @@ import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/form
 import {ModelCorpiCelesti} from "../Models/model-corpi-celesti";
 import { formatDate } from '@angular/common';
 import {Message} from "primeng/api";
+import { DatabaseService} from "../database.service";
+import {Observable, Subscription} from "rxjs";
+import {Router} from "@angular/router";
+
+
 @Component({
-  selector: 'app-main-form',
-  templateUrl: './main-form.component.html',
-  styleUrls: ['./main-form.component.css']
+  selector: 'app-registration-form',
+  templateUrl: './registration-form.component.html',
+  styleUrls: ['./registration-form.component.css']
 })
-export class MainFormComponent {
+export class RegistrationFormComponent {
   corpoCelesteSelected:ModelCorpiCelesti={nome:"pianeta",codice:"p"}
   corpiCelesti:ModelCorpiCelesti[]=[{nome:"pianeta",codice:"p"}, {nome:"stella",codice:"s"} ,{nome:"asteroide",codice:"a"}, {nome:"meteora",codice:"m"}, {nome:"U.F.O.",codice:"u"}]
   classiHarvard:string[]=["O","B","A","F","G","K","M"]
-  messaggioInvio: Message[] = [{ severity: 'success', summary: '', detail: 'Registrazione avvenuta con successo!' }];
-  displayMessaggioInvio:boolean=false;
+  dialogMessaggio: Message[] = [{ severity: 'success', summary: '', detail: 'Registrazione avvenuta con successo!' }];
+  displayDialogMessaggio:boolean=false;
   displayTemperatura:boolean=true
   displayMassa:boolean=true
   displayRaggio:boolean=true
@@ -23,8 +28,6 @@ export class MainFormComponent {
   displayDistanza:boolean=true
   displaySistemaSolare:boolean=true
   dataOggi:Date=new Date();
-
-
   mainFormGroup:FormGroup = new FormGroup({
     data:new FormControl(Validators.required),
     angoloOrario:new FormControl("",Validators.required),
@@ -38,6 +41,9 @@ export class MainFormComponent {
     distanza:new FormControl(""),
     sistemaSolare:new FormControl(true),
   })
+  constructor(private databaseService: DatabaseService,private router: Router) {
+  }
+
 
 
   validatoreMassaRaggio(control: AbstractControl): { [key: string]: any } | null {
@@ -60,6 +66,12 @@ export class MainFormComponent {
     this.mainFormGroup.reset()
     this.dataOggi=new Date()
     this.mainFormGroup.controls['data'].setValue(formatDate(this.dataOggi, 'yyyy-MM-ddTHH:mm:ss', 'it'))
+    this.displayDialogMessaggio=false
+  }
+
+  returnToHome(){
+    this.displayDialogMessaggio=false
+    this.router.navigate(["home"])
   }
 
 
@@ -114,9 +126,7 @@ export class MainFormComponent {
 
   }
 
-  getValidators(name:string){
 
-  }
 
 
   distanzaModificata(){
@@ -148,9 +158,13 @@ export class MainFormComponent {
     this.mainFormGroup.controls['raggio'].setValidators(this.validatoreMassaRaggio)
   }
 
+
+
   onSubmit() {
-    this.displayMessaggioInvio=true
-    this.resetForm()
+    this.databaseService.addData(this.mainFormGroup.value);
+    this.displayDialogMessaggio=true
   }
+
+
 
 }

@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {ButtonModule} from "primeng/button";
 import {TagModule} from "primeng/tag";
-
 import {CarouselModule} from "primeng/carousel";
 import {CardModule} from "primeng/card";
 import {PanelModule} from "primeng/panel";
@@ -94,8 +93,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {KeyFilterModule} from "primeng/keyfilter";
 import {RegistrationFormComponent} from "./registration-form/registration-form.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule} from "@angular/forms";
 import {registerLocaleData} from "@angular/common";
 import { HomepageComponent } from './homepage/homepage.component';
+import {ConfirmationService, MessageService} from "primeng/api";
 registerLocaleData(localeIt)
 @NgModule({
   declarations: [
@@ -203,9 +204,12 @@ registerLocaleData(localeIt)
     CardModule,
     KeyFilterModule,
     ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
-    {provide:LOCALE_ID,useValue:'it-IT'}
+    {provide:LOCALE_ID,useValue:'it-IT'},
+    ConfirmationService,
+    MessageService
   ],
   bootstrap: [AppComponent,RegistrationFormComponent]
 })

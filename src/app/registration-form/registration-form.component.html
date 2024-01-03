@@ -1,9 +1,10 @@
 <div class="card flex justify-content-center">
-  <form (ngSubmit)="onSubmit()" [formGroup]="mainFormGroup">
+  <form [formGroup]="mainFormGroup" (ngSubmit)="onSubmit()" >
     <p-card>
+
       <ng-template pTemplate="header">
         <div class="p-card-title">
-          <i class="pi pi-star-fill custom-star-icon " ></i>Form Registrazione
+          <i class="pi pi-star-fill custom-star-icon " ></i>{{titleForm}}
           <br>
           <label class="labelInfoForm">I campi con il simbolo (*) sono campi richiesti per la registrazione</label>
         </div>
@@ -83,17 +84,18 @@
       </div>
       <ng-template pTemplate="footer">
         <p-button class="marginRightedButton" type="button" severity="secondary" icon="pi pi-home" (click)="returnToHome()" label="Torna alla home" pAutoFocus [autofocus]="true"></p-button>
-        <p-button severity="success" [disabled]="mainFormGroup.invalid" type="submit" label="Invia" icon="pi pi-check"></p-button>
+        <p-button *ngIf="!displayButtonModifyRegistration" severity="success" [disabled]="mainFormGroup.invalid" type="submit" label="Invia" icon="pi pi-check"></p-button>
+        <p-button *ngIf="displayButtonModifyRegistration"  severity="success" [disabled]="mainFormGroup.invalid" type="submit" label="Modifica" icon="pi pi-check"></p-button>
 
       </ng-template>
     </p-card>
   </form>
 </div>
-<p-dialog header="Esito registrazione" [(visible)]="displayDialogMessaggio" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [closable]="false">
+<p-dialog [header]="dialogTitle" [(visible)]="displayDialogMessaggio" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [closable]="false">
   <p-messages [(value)]="dialogMessaggio" [enableService]="false" [closable]="false"></p-messages>
   <ng-template pTemplate="footer">
     <p-button severity="secondary" icon="pi pi-home" (click)="returnToHome()" label="Torna alla home" pAutoFocus [autofocus]="true"></p-button>
-    <p-button severity="success" icon="pi pi-plus" (click)="resetForm()" label="Esegui nuova registrazione" pAutoFocus [autofocus]="true"></p-button>
+    <p-button *ngIf="!displayButtonModifyRegistration" severity="success" icon="pi pi-plus" (click)="resetForm()" label="Esegui nuova registrazione" pAutoFocus [autofocus]="true"></p-button>
   </ng-template>
 </p-dialog>
 

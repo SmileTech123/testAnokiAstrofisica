@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ModelCorpiCelesti} from "../Models/model-corpi-celesti";
 import { formatDate } from '@angular/common';
 import {Message} from "primeng/api";
 import { DatabaseService} from "../database.service";
 import {Observable, Subscription} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 
 @Component({
@@ -13,10 +13,13 @@ import {Router} from "@angular/router";
   templateUrl: './registration-form.component.html',
   styleUrls: ['./registration-form.component.css']
 })
-export class RegistrationFormComponent {
+export class RegistrationFormComponent implements OnInit{
+  idRegistrazione:number=0
   corpoCelesteSelected:ModelCorpiCelesti={nome:"pianeta",codice:"p"}
+  dialogTitle:string="Esito registrazione"
   corpiCelesti:ModelCorpiCelesti[]=[{nome:"pianeta",codice:"p"}, {nome:"stella",codice:"s"} ,{nome:"asteroide",codice:"a"}, {nome:"meteora",codice:"m"}, {nome:"U.F.O.",codice:"u"}]
   classiHarvard:string[]=["O","B","A","F","G","K","M"]
+  titleForm:string="Form Registrazione"
   dialogMessaggio: Message[] = [{ severity: 'success', summary: '', detail: 'Registrazione avvenuta con successo!' }];
   displayDialogMessaggio:boolean=false;
   displayTemperatura:boolean=true
@@ -27,22 +30,43 @@ export class RegistrationFormComponent {
   displayAlbedo:boolean=true
   displayDistanza:boolean=true
   displaySistemaSolare:boolean=true
+  displayButtonModifyRegistration:boolean=false
   dataOggi:Date=new Date();
-  mainFormGroup:FormGroup = new FormGroup({
-    data:new FormControl(Validators.required),
-    angoloOrario:new FormControl("",Validators.required),
-    declinazione:new FormControl("",Validators.required),
-    temperatura:new FormControl(""),
-    massa:new FormControl("",[this.validatoreMassaRaggio]),
-    raggio:new FormControl("",[this.validatoreMassaRaggio]),
-    classeHarvard:new FormControl(""),
-    inclinazioneOrbitale:new FormControl(""),
-    albedo:new FormControl(""),
-    distanza:new FormControl(""),
-    sistemaSolare:new FormControl(true),
-  })
-  constructor(private databaseService: DatabaseService,private router: Router) {
+  mainFormGroup:FormGroup = new FormGroup({})
+  constructor(private databaseService: DatabaseService,private router: Router,private route: ActivatedRoute) {
   }
+
+  ngOnInit(): void {
+    this.mainFormGroup = new FormGroup<any>({
+      data:new FormControl(Validators.required),
+      angoloOrario:new FormControl("",Validators.required),
+      declinazione:new FormControl("",Validators.required),
+      temperatura:new FormControl(""),
+      massa:new FormControl("",[this.validatoreMassaRaggio]),
+      raggio:new FormControl("",[this.validatoreMassaRaggio]),
+      classeHarvard:new FormControl(""),
+      inclinazioneOrbitale:new FormControl(""),
+      albedo:new FormControl(""),
+      distanza:new FormControl(""),
+      sistemaSolare:new FormControl(true),
+    })
+    this.route.queryParams.subscribe(params => {
+      var idParam=params["id"]
+      if(idParam!=undefined){
+        this.idRegistrazione=idParam
+        this.databaseService.getData().subscribe((r:any)=>{
+          this.corpoCelesteSelected={codice:r[idParam].codiceCorpoCeleste,nome:r[idParam].nomeCorpoCeleste}
+          this.displayButtonModifyRegistration=true
+          setTimeout(()=>{
+            this.mainFormGroup.patchValue(r[idParam])
+
+          },100)
+        }).unsubscribe()
+      }
+    })
+  }
+
+
 
 
 
@@ -172,10 +196,17 @@ export class RegistrationFormComponent {
 
 
   onSubmit() {
-    this.databaseService.addData(this.mainFormGroup.value);
+    this.mainFormGroup.value.codiceCorpoCeleste = this.corpoCelesteSelected.codice
+    this.mainFormGroup.value.nomeCorpoCeleste = this.corpoCelesteSelected.nome
+
+
+    if(this.displayButtonModifyRegistration){
+      this.dialogTitle="Esito modifica"
+      this.dialogMessaggio= [{ severity: 'success', summary: '', detail: 'Modificata avvenuta con successo!' }];
+      this.databaseService.modifyData(this.idRegistrazione,this.mainFormGroup.value);
+    }else{
+      this.databaseService.addData(this.mainFormGroup.value);
+    }
     this.displayDialogMessaggio=true
   }
-
-
-
 }

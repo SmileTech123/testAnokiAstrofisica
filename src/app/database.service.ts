@@ -20,6 +20,18 @@ export class DatabaseService {
     return this.dataSubject.asObservable();
   }
 
+  deleteData(id:number): void {
+    this.data.splice(id,1)
+    this.dataSubject.next([...this.data]); // Aggiorna i sottoscrittori con i nuovi dati;
+    sessionStorage.setItem('database', JSON.stringify(this.data));
+  }
+
+  modifyData(id:number,item: ModelValueForm){
+    this.data[id]=item
+    this.dataSubject.next([...this.data]); // Aggiorna i sottoscrittori con i nuovi dati;
+    sessionStorage.setItem('database', JSON.stringify(this.data));
+  }
+
   addData(item: ModelValueForm): void {
     this.data.push(item);
     this.dataSubject.next([...this.data]); // Aggiorna i sottoscrittori con i nuovi dati;

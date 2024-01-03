@@ -1,0 +1,21 @@
+.p-card-title{
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
+
+.custom-star-icon{
+  font-size: 1.5rem;
+  margin-right:1rem
+}
+
+.button-right-aligned {
+  float: right;
+  margin-top: 15px;
+  margin-right: 10px;
+}
+
+.rightAlignedText{
+  text-align: right;
+}

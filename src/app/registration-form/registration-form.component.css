@@ -5,8 +5,16 @@
   padding-top: 1rem;
 }
 
+.custom-star-icon{
+  font-size: 1.5rem;
+  margin-right:1rem
+}
+
 ::ng-deep .p-dropdown{
   width:100%;
+}
+.marginRightedButton{
+  margin-right:10px
 }
 
 
@@ -14,10 +22,6 @@
   margin-left: 0.2rem
 }
 
-.custom-star-icon{
-  font-size: 1.5rem;
-  margin-right:1rem
-}
 
 .custom-icon-true{
   font-size: 1.5rem;
@@ -29,6 +33,16 @@
   color: red;
 }
 
+
+.labelInfoForm{
+  font-size: 0.8rem;
+}
+
+.requiredTag {
+  margin-left: 15px;
+
+
+}
 
 input{
   width: 100%;

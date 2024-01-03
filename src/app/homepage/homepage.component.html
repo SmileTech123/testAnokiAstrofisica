@@ -1,4 +1,60 @@
 
-<div>
-  <p *ngFor="let dt of data">{{ dt.data }}</p>
+
+
+<div class="card  justify-content-center">
+  <p-card>
+    <ng-template pTemplate="header">
+      <p-button (click)="goToRegistration()" class="button-right-aligned" label="Nuova registrazione" [raised]="true" size="small" severity="success"></p-button>
+      <div class="p-card-title">
+        <i class="pi pi-list custom-star-icon " ></i>Lista Registrazioni
+      </div>
+
+    </ng-template>
+    <p-table     [value]="listaRegistrazioni" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
+          <ng-template pTemplate="header">
+            <tr>
+              <th  >Data</th>
+              <th>Angolo Orario</th>
+              <th>Declinazione</th>
+              <th>Temperatura</th>
+              <th>Massa</th>
+              <th>Raggio</th>
+              <th>Classe Harvard</th>
+              <th>Inclinazione Orbitale</th>
+              <th>Albedo</th>
+              <th>Distanza</th>
+              <th>Sistema Solare</th>
+              <th alignFrozen="right" pFrozenColumn >Azioni</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-registrazione>
+            <tr>
+              <td >{{ formatDate(registrazione.data, 'dd/MM/yyyy HH:mm:ss', 'it')  }}</td>
+              <td class="rightAlignedText">{{ registrazione.angoloOrario }}°</td>
+              <td class="rightAlignedText">{{ registrazione.declinazione }}°</td>
+              <td class="rightAlignedText">{{ registrazione.temperatura ? registrazione.temperatura+' K':'' }} </td>
+              <td class="rightAlignedText">{{ registrazione.massa ? registrazione.massa+' M⊙':'' }} </td>
+              <td class="rightAlignedText">{{ registrazione.raggio  ? registrazione.raggio +' R⊙':'' }} </td>
+              <td class="rightAlignedText">{{ registrazione.classeHarvard }} </td>
+              <td class="rightAlignedText">{{ registrazione.inclinazioneOrbitale }} </td>
+              <td class="rightAlignedText">{{ registrazione.albedo  ? registrazione.albedo +' %':'' }} </td>
+              <td class="rightAlignedText">{{ registrazione.distanza ? registrazione.distanza+' UA':'' }} </td>
+              <td>
+                <ng-container *ngIf="registrazione.sistemaSolare !== null">
+                  <i class="rightAlignedText" *ngIf="registrazione.sistemaSolare"  class="pi pi-check" style="font-size: 1.5rem;color: green"></i>
+                  <i class="rightAlignedText" *ngIf="!registrazione.sistemaSolare" class="pi pi-times" style="font-size: 1.5rem;color: red"></i>
+                </ng-container>
+              </td>
+              <td alignFrozen="right" pFrozenColumn >
+                  <div class="flex align-items-center justify-content-center gap-2">
+                    <p-button [rounded]="true" [text]="true"   type="button" icon="pi pi-pencil"></p-button>
+                    <p-button severity="danger" [rounded]="true" [text]="true"  type="button" icon="pi pi-trash"></p-button>
+
+                  </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+  </p-card>
+
 </div>

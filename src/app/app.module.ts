@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {ButtonModule} from "primeng/button";
 import {TagModule} from "primeng/tag";
+
 import {CarouselModule} from "primeng/carousel";
 import {CardModule} from "primeng/card";
 import {PanelModule} from "primeng/panel";

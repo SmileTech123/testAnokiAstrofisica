@@ -48,6 +48,9 @@ export class RegistrationFormComponent {
 
   validatoreMassaRaggio(control: AbstractControl): { [key: string]: any } | null {
       const value = control.value;
+      if(value==null){
+        return null;
+      }
       if (value <= 0 || value >100) {
         return { 'validatoreMassaRaggio': true };
       }
@@ -56,9 +59,12 @@ export class RegistrationFormComponent {
 
   validatoreDistanzaUA(control: AbstractControl): { [key: string]: any } | null {
     const value = control.value;
-    if (value <= 0 || value >5881413000000000) {
-      return { 'validatoreDistanzaUA': true };
+    if(value!=null){
+      if (value <= 0 || value >5881413000000000) {
+        return { 'validatoreDistanzaUA': true };
+      }
     }
+
     return null;
   }
 
@@ -85,17 +91,22 @@ export class RegistrationFormComponent {
       case "p":
         this.displayHarvard=false
         this.mainFormGroup.controls['distanza'].setValidators([Validators.required,this.validatoreDistanzaUA])
+        this.mainFormGroup.controls['distanza'].updateValueAndValidity()
+
         break;
       case "s":
         this.displayInclinazioneOrbitale=false;
         this.displayAlbedo=false
         this.mainFormGroup.controls['classeHarvard'].setValidators(Validators.required)
         this.mainFormGroup.controls['distanza'].setValidators([Validators.required,this.validatoreDistanzaUA])
+        this.mainFormGroup.controls['distanza'].updateValueAndValidity()
+        this.mainFormGroup.controls['classeHarvard'].updateValueAndValidity()
         break;
       case "a":
         this.displayHarvard=false
         this.displayInclinazioneOrbitale=false
         this.mainFormGroup.controls['distanza'].setValidators([Validators.required,this.validatoreDistanzaUA])
+        this.mainFormGroup.controls['distanza'].updateValueAndValidity()
         break;
       case "m":
         this.displayTemperatura=false

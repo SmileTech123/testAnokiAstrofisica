@@ -4,60 +4,76 @@
       <ng-template pTemplate="header">
         <div class="p-card-title">
           <i class="pi pi-star-fill custom-star-icon " ></i>Form Registrazione
+          <br>
+          <label class="labelInfoForm">I campi con il simbolo (*) sono campi richiesti per la registrazione</label>
         </div>
       </ng-template>
       <div class="grid">
-        <div class="col">
+        <div class="col-12">
           <label class="customLabel">Corpo Celeste</label>
           <p-dropdown [(ngModel)]="corpoCelesteSelected" (ngModelChange)="changeCorpoCeleste()" [ngModelOptions]="{standalone:true}"  [options]="corpiCelesti" optionLabel="nome" placeholder="Seleziona corpo celeste"></p-dropdown>
         </div>
       </div>
       <div class="grid">
-        <div class="col">
-          <label class="customLabel">Data</label>
+        <div class="col-12 md:col">
+          <label class="customLabel">Data *</label>
+
           <input formControlName="data" type="datetime-local" pInputText  />
         </div>
-        <div class="col">
-          <label class="customLabel">Angolo orario (°)</label>
+        <div class="col-12 md:col">
+          <label class="customLabel">Angolo orario (°) *</label>
+
           <input  formControlName="angoloOrario" type="number" min="0" max="360" pInputText  />
+          <small *ngIf="mainFormGroup.controls['angoloOrario'].invalid && mainFormGroup.controls['angoloOrario'].touched"  class="p-error">Il valore deve essere tra 0 e 360°</small>
         </div>
-        <div class="col">
-          <label class="customLabel">Declinazione (°)</label>
+        <div class="col-12 md:col">
+          <label class="customLabel">Declinazione (°) *</label>
+
           <input formControlName="declinazione" type="number" min="-90" max="90" pInputText  />
+          <small *ngIf="mainFormGroup.controls['declinazione'].invalid && mainFormGroup.controls['declinazione'].touched"  class="p-error">Il valore deve essere tra -90 e 90°</small>
         </div>
-        <div *ngIf="displayTemperatura" class="col">
+        <div *ngIf="displayTemperatura" class="col-12 md:col">
           <label class="customLabel">Temperatura (K)</label>
           <input formControlName="temperatura" type="number" min="0" max="300000" pInputText  />
+          <small *ngIf="mainFormGroup.controls['temperatura'].invalid && mainFormGroup.controls['temperatura'].touched"  class="p-error">Il valore deve essere tra 0 e 300000 K</small>
         </div>
       </div>
       <div class="grid">
-        <div *ngIf="displayMassa" class="col">
+        <div *ngIf="displayMassa" class="col-12 md:col">
           <label class="customLabel">Massa (M⊙)</label>
           <input formControlName="massa" type="number" pInputText  />
+          <small *ngIf="mainFormGroup.controls['massa'].invalid && mainFormGroup.controls['massa'].touched"  class="p-error">Il valore deve essere maggiore di 0 e minore di 100 M⊙</small>
         </div>
-        <div *ngIf="displayRaggio" class="col">
+        <div *ngIf="displayRaggio" class="col-12 md:col">
           <label class="customLabel">Raggio (R⊙)</label>
           <input formControlName="raggio" type="number" pInputText  />
+          <small *ngIf="mainFormGroup.controls['raggio'].invalid && mainFormGroup.controls['raggio'].touched"  class="p-error">Il valore deve essere maggiore di 0 e minore di 100 R⊙</small>
         </div>
-        <div *ngIf="displayHarvard" class="col">
-          <label class="customLabel">Classe Harvard</label>
+        <div *ngIf="displayHarvard" class="col-12 md:col">
+
+          <label class="customLabel">Classe Harvard *</label>
+
           <p-dropdown formControlName="classeHarvard" [options]="classiHarvard"  placeholder="Seleziona classe Harvard"></p-dropdown>
+
         </div>
-        <div *ngIf="displayInclinazioneOrbitale" class="col">
+        <div *ngIf="displayInclinazioneOrbitale" class="col-12 md:col">
           <label class="customLabel">Inclinazione Orbitale</label>
           <input formControlName="inclinazioneOrbitale" type="number" min="0" max="180" pInputText  />
+          <small *ngIf="mainFormGroup.controls['inclinazioneOrbitale'].invalid && mainFormGroup.controls['inclinazioneOrbitale'].touched"  class="p-error">Il valore deve essere tra 0 e 180 °</small>
         </div>
       </div>
       <div class="grid">
-        <div *ngIf="displayAlbedo"  class="col-5">
+        <div *ngIf="displayAlbedo"  class="col-12 md:col-5">
           <label class="customLabel">Albedo (%)</label>
           <input formControlName="albedo" type="number" min="0" max="100" pInputText  />
+          <small *ngIf="mainFormGroup.controls['albedo'].invalid && mainFormGroup.controls['albedo'].touched"  class="p-error">Il valore deve essere tra 0 e 100 %</small>
         </div>
-        <div *ngIf="displayDistanza" class="col-5">
-          <label class="customLabel">Distanza (UA)</label>
+        <div *ngIf="displayDistanza" class="col-12 md:col-5">
+          <label class="customLabel">Distanza (UA) *</label>
           <input formControlName="distanza" (input)="distanzaModificata()"  type="number" pInputText  />
+          <small *ngIf="mainFormGroup.controls['distanza'].invalid && mainFormGroup.controls['distanza'].touched"  class="p-error">Il valore deve essere maggiore di 0 e minore di 5’881’413’000’000’000 UA</small>
         </div>
-        <div *ngIf="displaySistemaSolare"   class="col-2 text-center">
+        <div *ngIf="displaySistemaSolare"   class="col-12 md:col-2 text-center">
           <label class="customLabel">Sistema Solare</label>
           <br>
           <br>
@@ -66,12 +82,14 @@
         </div>
       </div>
       <ng-template pTemplate="footer">
-        <p-button [disabled]="mainFormGroup.invalid" type="submit" label="Invia" icon="pi pi-check"></p-button>
+        <p-button class="marginRightedButton" type="button" severity="secondary" icon="pi pi-home" (click)="returnToHome()" label="Torna alla home" pAutoFocus [autofocus]="true"></p-button>
+        <p-button severity="success" [disabled]="mainFormGroup.invalid" type="submit" label="Invia" icon="pi pi-check"></p-button>
+
       </ng-template>
     </p-card>
   </form>
 </div>
-<p-dialog header="Esito registrazione" [(visible)]="displayDialogMessaggio" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+<p-dialog header="Esito registrazione" [(visible)]="displayDialogMessaggio" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [closable]="false">
   <p-messages [(value)]="dialogMessaggio" [enableService]="false" [closable]="false"></p-messages>
   <ng-template pTemplate="footer">
     <p-button severity="secondary" icon="pi pi-home" (click)="returnToHome()" label="Torna alla home" pAutoFocus [autofocus]="true"></p-button>

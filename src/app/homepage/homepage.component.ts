@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {DatabaseService} from "../database.service";
 import {ModelValueForm} from "../Models/model-value-form";
+import {formatDate} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-homepage',
@@ -9,14 +11,35 @@ import {ModelValueForm} from "../Models/model-value-form";
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit{
-  data:ModelValueForm[]=[]
-  dataSubscription: Subscription | undefined;
-  constructor(private databaseService: DatabaseService) {
+  listaRegistrazioni:ModelValueForm[]=[]
+  listaRegistrazioniSubscription: Subscription | undefined;
+  frozenCols: any[]=[];
+  scrollableCols: any[]=[];
+  constructor(private databaseService: DatabaseService,private router: Router) {
   }
   ngOnInit(): void {
-    this.dataSubscription = this.databaseService.getData().subscribe((items:ModelValueForm[]) => {
-      this.data = items;
-      console.log( this.data);
+    this.listaRegistrazioniSubscription = this.databaseService.getData().subscribe((items:ModelValueForm[]) => {
+      this.listaRegistrazioni = items;
+      this.scrollableCols = [
+        { field: 'year', header: 'Year'},
+        { field: 'brand', header: 'Brand'},
+        { field: 'color', header: 'Color' },
+        { field: 'year', header: 'Year' },
+        { field: 'brand', header: 'Brand'},
+        { field: 'color', header: 'Color' }
+      ];
+
+      this.frozenCols = [
+        { field: 'vin', header: 'Vin' }
+      ];
     });
   }
+
+  goToRegistration(){
+    this.router.navigate(["/registration"])
+  }
+
+
+
+  protected readonly formatDate = formatDate;
 }

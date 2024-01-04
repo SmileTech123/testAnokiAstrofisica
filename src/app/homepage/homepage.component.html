@@ -10,7 +10,7 @@
       </div>
 
     </ng-template>
-    <p-table     [value]="listaRegistrazioni" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table [value]="listaRegistrazioni" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
           <ng-template pTemplate="header">
             <tr>
               <th>Data</th>
@@ -41,12 +41,17 @@
               <td class="rightAlignedText">{{ registrazione.inclinazioneOrbitale }} </td>
               <td class="rightAlignedText">{{ registrazione.albedo  ? registrazione.albedo +' %':'' }} </td>
               <td class="rightAlignedText">{{ registrazione.distanza ? registrazione.distanza+' UA':'' }} </td>
+              <!-- Qui effettuo il controllo del valore di sistemaSolare    -->
+              <!-- Se null non scrivo nulla    -->
+              <!-- Altrimenti inserisco l' icona in base al valore   -->
               <td>
                 <ng-container *ngIf="registrazione.sistemaSolare !== null">
-                  <i class="rightAlignedText" *ngIf="registrazione.sistemaSolare"  class="pi pi-check" style="font-size: 1.5rem;color: green"></i>
-                  <i class="rightAlignedText" *ngIf="!registrazione.sistemaSolare" class="pi pi-times" style="font-size: 1.5rem;color: red"></i>
+                  <i *ngIf="registrazione.sistemaSolare"  class="pi pi-check rightAlignedText" style="font-size: 1.5rem;color: green"></i>
+                  <i  *ngIf="!registrazione.sistemaSolare" class="pi pi-times rightAlignedText" style="font-size: 1.5rem;color: red"></i>
                 </ng-container>
               </td>
+
+              <!-- Qui inserisco le colonne che voglio siano sempre visibili   -->
               <td alignFrozen="right" pFrozenColumn >
                   <div class="flex align-items-center justify-content-center gap-2">
                     <p-button (click)="modifyRegistration(rowIndex)" [rounded]="true" [text]="true"   type="button" icon="pi pi-pencil"></p-button>
@@ -59,5 +64,6 @@
   </p-card>
 
 </div>
+<!-- Dialog per la conferma eliminazione   -->
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>

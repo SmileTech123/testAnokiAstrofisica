@@ -1,3 +1,5 @@
+
+//Modello per i valori del form
 export interface ModelValueForm {
   data: string
   angoloOrario: number

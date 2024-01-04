@@ -5,37 +5,45 @@ import {ModelValueForm} from "./Models/model-value-form";
 @Injectable({
   providedIn: 'root'
 })
+
+//Componente per gestire il database simulato con rxjs richiamabile in tutto il progetto
+
 export class DatabaseService {
-  private dataSubject = new BehaviorSubject<any[]>([]);
-  private data: ModelValueForm[] = []; // Dati del database
+  private databaseSubject = new BehaviorSubject<any[]>([]);
+  private dati: ModelValueForm[] = []; // Dati del database
   constructor() {
+    //Prendo i valori dalla sessione e se esistono inizializzo l array con i valori recuperati
     const savedData = sessionStorage.getItem('database');
     if (savedData) {
-      this.data = JSON.parse(savedData);
-      this.dataSubject.next([...this.data]);
+      this.dati = JSON.parse(savedData);
+      this.databaseSubject.next([...this.dati]);
     }
   }
 
+  //Funzione che ritorna i valori storicizzati nel database
   getData(): Observable<any[]> {
-    return this.dataSubject.asObservable();
+    return this.databaseSubject.asObservable();
   }
 
+  //Funzione che elimina i valori tramite id nel database
   deleteData(id:number): void {
-    this.data.splice(id,1)
-    this.dataSubject.next([...this.data]); // Aggiorna i sottoscrittori con i nuovi dati;
-    sessionStorage.setItem('database', JSON.stringify(this.data));
+    this.dati.splice(id,1)
+    this.databaseSubject.next([...this.dati]); // Aggiorna i sottoscrittori con i nuovi dati;
+    sessionStorage.setItem('database', JSON.stringify(this.dati));
   }
 
+  //Funzione che modifica i valori tramite id nel database
   modifyData(id:number,item: ModelValueForm){
-    this.data[id]=item
-    this.dataSubject.next([...this.data]); // Aggiorna i sottoscrittori con i nuovi dati;
-    sessionStorage.setItem('database', JSON.stringify(this.data));
+    this.dati[id]=item
+    this.databaseSubject.next([...this.dati]); // Aggiorna i sottoscrittori con i nuovi dati;
+    sessionStorage.setItem('database', JSON.stringify(this.dati));
   }
 
+  //Funzione che aggiunge i valori al database
   addData(item: ModelValueForm): void {
-    this.data.push(item);
-    this.dataSubject.next([...this.data]); // Aggiorna i sottoscrittori con i nuovi dati;
-    sessionStorage.setItem('database', JSON.stringify(this.data));
+    this.dati.push(item);
+    this.databaseSubject.next([...this.dati]); // Aggiorna i sottoscrittori con i nuovi dati;
+    sessionStorage.setItem('database', JSON.stringify(this.dati));
   }
 
 

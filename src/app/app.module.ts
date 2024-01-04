@@ -97,12 +97,14 @@ import {FormsModule} from "@angular/forms";
 import {registerLocaleData} from "@angular/common";
 import { HomepageComponent } from './homepage/homepage.component';
 import {ConfirmationService, MessageService} from "primeng/api";
+import { CustomInputComponent } from './custom-input/custom-input.component';
 registerLocaleData(localeIt)
 @NgModule({
   declarations: [
     AppComponent,
     RegistrationFormComponent,
-    HomepageComponent
+    HomepageComponent,
+    CustomInputComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -205,6 +207,9 @@ registerLocaleData(localeIt)
     KeyFilterModule,
     ReactiveFormsModule,
     FormsModule
+  ],
+  exports:[
+    CustomInputComponent
   ],
   providers: [
     {provide:LOCALE_ID,useValue:'it-IT'},
